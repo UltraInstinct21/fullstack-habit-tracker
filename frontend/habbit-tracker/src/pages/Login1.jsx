@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
     Card,
@@ -13,10 +14,8 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-const api = axios.create({
-    baseURL: "http://localhost:3000",
-    withCredentials: true
-});
+import api from '../lib/api'
+
 
 export function Login1() {
     const [signup, setSignUp] = useState(false);
@@ -24,45 +23,50 @@ export function Login1() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [responseMessage, setResponseMessage] = useState("");
+    const navigate = useNavigate();
 
     function handleSignupClick(e) {
         e.preventDefault();
         setSignUp(!signup);
     }
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
+   const handleSubmit = async (event) => {
+    event.preventDefault();
 
-        let newPost = {}
+    try {
+        let newPost = {};
 
         if (!signup) {
             newPost = {
-                email: email,
-                password: password
-
+                email,
+                password
             };
-        }
-
-        else {
+        } else {
             newPost = {
-                username: username,
-                email: email,
-                password: password
-
+                username,
+                email,
+                password
             };
         }
 
         const url = signup ? "/auth/register" : "/auth/login";
-        // Make POST request to send data
-        api
-            .post(url, newPost)
-            .then((response) => {
-                setResponseMessage("Post created successfully!");
-            })
-            .catch((err) => {
-                setResponseMessage("Error creating post");
-            });
-    };
+
+        const response = await api.post(url, newPost);
+
+        // Save token (make sure backend sends it)
+        localStorage.setItem("token", response.data.token);
+
+        setResponseMessage("Login Successful!");
+
+        // Navigate ONLY after success
+        navigate("/habits");
+
+    } catch (err) {
+        setResponseMessage("Error logging in!");
+        console.log(err);
+    }
+};
+
     return (
 
         <div className="flex items-center justify-center h-screen">

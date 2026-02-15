@@ -6,19 +6,11 @@ import {
   Route,
 } from "react-router-dom";
 import { ThemeProvider } from "@/components/theme-provider"
-import Login from './pages/Login.jsx'
-import HabitForm from './components/Chakra-old/HabitForm.jsx'
-import HabitCard from './components/Chakra-old/HabitCard.jsx';
-import Check from './components/Chakra-old/Check';
-import Navbar from './components/Navbar';
 import Home from './pages/Home';
-import DetailedCard from './components/UpdateCard';
 import { Login1 } from './pages/Login1';
-import Check1 from './components/Check1';
-import HabitCard1 from './components/HabitCard1';
-import HabitForm1 from './components/HabitForm1';
 import Squares from './components/Squares';
 import LandingPage from './pages/LandingPage';
+import ProtectedRoute from './components/Protected'
 
 function App() {
 
@@ -47,9 +39,10 @@ function App() {
               <Router>
                 <Routes>
                   <Route path="/login" element={<Login1 />} />
-                  <Route path="/" element={<LandingPage/>} />
-                  <Route path="/habits" element={<Home />} />
-                  <Route path="/create-habit" element={<HabitForm1 />} />
+                  <Route path="/" element={<LandingPage />} />
+                  <Route element={<ProtectedRoute />}>
+                    <Route path="/habits" element={<Home />} />
+                  </Route>
                 </Routes>
               </Router>
             </div>

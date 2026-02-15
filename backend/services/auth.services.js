@@ -14,13 +14,15 @@ exports.register = async (username, email, password) => {
 
   const hashedPassword = await passwordUtil.hashPassword(password);
 
-  const user = await userRepository.createUser({
+  const createUser = await userRepository.createUser({
     username,
     email,
     password: hashedPassword
   });
 
-  return user._id;
+  const user = await userRepository.findByEmail(createUser.email);
+
+  return jwtUtil.generateToken(user);
 };
 
 exports.login = async (email, password) => {

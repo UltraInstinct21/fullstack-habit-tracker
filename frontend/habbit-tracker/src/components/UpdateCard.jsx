@@ -15,12 +15,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-const api = axios.create({
-  baseURL: "http://localhost:3000",
-  withCredentials: true,
-})
+import api from '../lib/api'
 
-const UpdateCard = ({ habitId }) => {
+const UpdateCard = ({ habitId, fetchOverview }) => {
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
   const [responseMessage, setResponseMessage] = useState("")
@@ -36,6 +33,7 @@ const UpdateCard = ({ habitId }) => {
     try {
       await api.patch(`/api/habits/${habitId}`, updatedHabit)
       setResponseMessage("Habit updated successfully!")
+      if (fetchOverview) fetchOverview()
     } catch (err) {
       console.error(err)
       setResponseMessage("Error updating habit")

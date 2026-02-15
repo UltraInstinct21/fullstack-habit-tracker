@@ -8,11 +8,21 @@ exports.register = async (req, res) => {
             return res.status(400).json({ message: "All fields are required" });
         }
 
-        const userId = await authService.register(username, email, password);
+        // register returns a JWT token
+        const token = await authService.register(username, email, password);
+
+        // set cookie (same options as login)
+        res.cookie("token", token, {
+            path: "/",
+            expires: new Date(Date.now() + 86400000),
+            secure: false,
+            httpOnly: true,
+            sameSite: "lax"
+        });
 
         res.status(201).json({
             message: "User registered successfully",
-            userId
+            token
         });
 
     } catch (error) {

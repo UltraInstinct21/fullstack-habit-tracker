@@ -16,10 +16,8 @@ import {
 } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 
-const api = axios.create({
-    baseURL: "http://localhost:3000",
-    withCredentials: true,
-})
+import api from '../lib/api'
+
 
 const HabitCard = () => {
     const [data, setData] = useState({
@@ -32,7 +30,7 @@ const HabitCard = () => {
     const fetchOverview = async () => {
         try {
             setLoading(true)
-            const res = await api.get("api/habits/overview")
+            const res = await api.get("/api/habits/overview")
 
             setData({
                 habits: res.data.habits || [],
@@ -52,7 +50,7 @@ const HabitCard = () => {
     // DELETE HABIT
     const handleDelete = async (habitId) => {
         try {
-            await api.delete(`api/habits/${habitId}`)
+            await api.delete(`/api/habits/${habitId}`)
 
             setData((prev) => ({
                 ...prev,
@@ -143,7 +141,7 @@ const HabitCard = () => {
                                 />
 
                                 <div className="flex flex-col gap-2">
-                                    <UpdateCard habitId={habit.habitId} />
+                                    <UpdateCard habitId={habit.habitId} fetchOverview={fetchOverview} />
 
                                     <Button
                                         variant="destructive"

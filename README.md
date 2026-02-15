@@ -35,7 +35,7 @@ A full-stack web application for tracking daily habits and building positive rou
 - **Framework**: React 18
 - **Build Tool**: Vite
 - **Styling**: Tailwind CSS
-- **UI Components**: Chakra UI
+- **UI Components**: Shadcn
 - **State Management**: React hooks
 
 ## 📂 Project Structure
@@ -117,7 +117,7 @@ Create a `.env` file in the `backend/` directory with the following variables:
 
 ```env
 # MongoDB Connection
-MONGODB_URI=mongodb://127.0.0.1:27017/test2
+MONGODB_URI=mongodb://127.0.0.1:27017/<your_database>
 
 # JWT Secret Key
 JWT_SECRET=your_secret_key_here
