@@ -280,4 +280,4 @@ POST /api/habits/:habitId/log
 
 ---
 
-**Last Updated**: February 2024
+**Last Updated**: February 2026
