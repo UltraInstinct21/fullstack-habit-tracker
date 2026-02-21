@@ -1,4 +1,5 @@
 const authService = require('../services/auth.services');
+const jwtUtil = require('../utils/jwt.ustil'); // For generating tokens for OAuth users
 
 exports.register = async (req, res) => {
     try {
@@ -47,13 +48,39 @@ exports.login = async (req, res) => {
             httpOnly: true,
             sameSite: "lax"
         });
-    
+
 
 
         res.json({ token });
 
     } catch (error) {
         res.status(401).json({ message: error.message });
+    }
+};
+
+exports.googleCallback = (req, res) => {
+    try {
+        if (!req.user) {
+            return res.status(401).json({ message: "Authentication failed" });
+        }
+
+        // Generate JWT for the Google User
+        const token = jwtUtil.generateToken(req.user);
+
+        // Set the JWT cookie
+        res.cookie("token", token, {
+            path: "/",
+            expires: new Date(Date.now() + 86400000), // 1 day
+            secure: false, // Set true in production with HTTPS
+            httpOnly: true,
+            sameSite: "lax"
+        });
+
+        // Redirect back to frontend dashboard with token
+        res.redirect(`http://localhost:5173/habits?token=${token}`);
+
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 };
 

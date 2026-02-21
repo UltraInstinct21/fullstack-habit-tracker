@@ -62,7 +62,7 @@ function Login() {
     };
 
     return (
-       
+
         <Box >
             <AbsoluteCenter>        <Card.Root maxW="md">
                 <Card.Header>
@@ -135,9 +135,15 @@ function Login() {
                     </Stack>
                 </Card.Body>
 
-                <Card.Footer justifyContent="flex-end">
-                    <Button variant="solid" onClick={handleSubmit}>
+                <Card.Footer flexDirection="column" gap="3">
+                    <Button variant="solid" onClick={handleSubmit} w="full">
                         {signup ? "Sign Up" : "Sign In"}
+                    </Button>
+
+                    <Text fontSize="sm" color="gray.500" textAlign="center">OR</Text>
+
+                    <Button variant="outline" w="full" as="a" href="http://localhost:3000/auth/google">
+                        Continue with Google
                     </Button>
                 </Card.Footer>
             </Card.Root></AbsoluteCenter>

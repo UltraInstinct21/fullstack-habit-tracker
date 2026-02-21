@@ -15,6 +15,25 @@ const habitRoutes = require('./routes/habits.routes')
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+const session = require('express-session');
+const passport = require('passport');
+require('./config/passport'); // Import passport configuration
+
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'keyboard cat',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: process.env.NODE_ENV === 'production',
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  }
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(cors({
   origin: "http://localhost:5173",
   credentials: true
